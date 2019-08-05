@@ -1,0 +1,1 @@
+go generation: `protoc --go_out=./go *.proto`
