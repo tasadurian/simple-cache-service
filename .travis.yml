@@ -4,5 +4,5 @@ go:
 - "1.12"
 - master
 
-script: go build .
+script: GO111MODULE=on go build .
 script: go test -v ./...
