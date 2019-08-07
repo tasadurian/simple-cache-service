@@ -7,6 +7,12 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+func TestGet(t *testing.T) {
+	// TODO(TA)
+	// Test getting config with no CONFIG_PATH
+	// Test getting config with CONFIG_PATH
+}
+
 func TestGetConfigPath(t *testing.T) {
 	os.Setenv("CONFIG_PATH", "")
 

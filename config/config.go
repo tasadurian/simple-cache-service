@@ -2,6 +2,7 @@ package config
 
 import (
 	"fmt"
+	"log"
 	"os"
 
 	"github.com/spf13/viper"
@@ -38,12 +39,15 @@ type BoltOpts struct {
 func Get() (*Config, error) {
 	configPath = getConfigPath()
 
+	setDefaults()
+
 	viper.SetConfigName("config")
 	viper.SetConfigType("yaml")
 	viper.AddConfigPath(configPath)
 	err := viper.ReadInConfig()
 	if err != nil {
-		return nil, fmt.Errorf("Fatal error config file: %s \n", err)
+		log.Printf("Fatal error loading config file: %s \n", err)
+		log.Printf("Using default in memory backend")
 	}
 
 	backend := viper.GetString("backend")
@@ -67,6 +71,11 @@ func getConfigPath() string {
 		configPath = defaultConfigPath
 	}
 	return configPath
+}
+
+func setDefaults() {
+	viper.SetDefault("backend", "memory")
+	viper.SetDefault("compression", "disabled")
 }
 
 // validBackend will return true if backend is valid
