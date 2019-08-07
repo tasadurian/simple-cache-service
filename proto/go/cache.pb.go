@@ -4,8 +4,12 @@
 package cache
 
 import (
+	context "context"
 	fmt "fmt"
 	proto "github.com/golang/protobuf/proto"
+	grpc "google.golang.org/grpc"
+	codes "google.golang.org/grpc/codes"
+	status "google.golang.org/grpc/status"
 	math "math"
 )
 
@@ -313,4 +317,156 @@ var fileDescriptor_5fca3b110c9bbf3a = []byte{
 	0xe4, 0x54, 0x2a, 0x31, 0x80, 0x14, 0x07, 0x23, 0x29, 0x0e, 0xc6, 0x54, 0x1c, 0x8c, 0xa2, 0xd8,
 	0x25, 0x35, 0x07, 0xae, 0x18, 0xe1, 0x62, 0xb8, 0x62, 0x98, 0x23, 0x95, 0x18, 0x92, 0xd8, 0xc0,
 	0x91, 0x66, 0x0c, 0x08, 0x00, 0x00, 0xff, 0xff, 0x6f, 0x22, 0x93, 0x4f, 0xc3, 0x01, 0x00, 0x00,
+}
+
+// Reference imports to suppress errors if they are not otherwise used.
+var _ context.Context
+var _ grpc.ClientConn
+
+// This is a compile-time assertion to ensure that this generated file
+// is compatible with the grpc package it is being compiled against.
+const _ = grpc.SupportPackageIsVersion4
+
+// CacheClient is the client API for Cache service.
+//
+// For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
+type CacheClient interface {
+	Get(ctx context.Context, in *GetRequest, opts ...grpc.CallOption) (*GetReply, error)
+	Set(ctx context.Context, in *SetRequest, opts ...grpc.CallOption) (*SetReply, error)
+	Del(ctx context.Context, in *DelRequest, opts ...grpc.CallOption) (*DelReply, error)
+}
+
+type cacheClient struct {
+	cc *grpc.ClientConn
+}
+
+func NewCacheClient(cc *grpc.ClientConn) CacheClient {
+	return &cacheClient{cc}
+}
+
+func (c *cacheClient) Get(ctx context.Context, in *GetRequest, opts ...grpc.CallOption) (*GetReply, error) {
+	out := new(GetReply)
+	err := c.cc.Invoke(ctx, "/cache.Cache/Get", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *cacheClient) Set(ctx context.Context, in *SetRequest, opts ...grpc.CallOption) (*SetReply, error) {
+	out := new(SetReply)
+	err := c.cc.Invoke(ctx, "/cache.Cache/Set", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *cacheClient) Del(ctx context.Context, in *DelRequest, opts ...grpc.CallOption) (*DelReply, error) {
+	out := new(DelReply)
+	err := c.cc.Invoke(ctx, "/cache.Cache/Del", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+// CacheServer is the server API for Cache service.
+type CacheServer interface {
+	Get(context.Context, *GetRequest) (*GetReply, error)
+	Set(context.Context, *SetRequest) (*SetReply, error)
+	Del(context.Context, *DelRequest) (*DelReply, error)
+}
+
+// UnimplementedCacheServer can be embedded to have forward compatible implementations.
+type UnimplementedCacheServer struct {
+}
+
+func (*UnimplementedCacheServer) Get(ctx context.Context, req *GetRequest) (*GetReply, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Get not implemented")
+}
+func (*UnimplementedCacheServer) Set(ctx context.Context, req *SetRequest) (*SetReply, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Set not implemented")
+}
+func (*UnimplementedCacheServer) Del(ctx context.Context, req *DelRequest) (*DelReply, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Del not implemented")
+}
+
+func RegisterCacheServer(s *grpc.Server, srv CacheServer) {
+	s.RegisterService(&_Cache_serviceDesc, srv)
+}
+
+func _Cache_Get_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CacheServer).Get(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/cache.Cache/Get",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CacheServer).Get(ctx, req.(*GetRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Cache_Set_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SetRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CacheServer).Set(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/cache.Cache/Set",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CacheServer).Set(ctx, req.(*SetRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Cache_Del_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DelRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CacheServer).Del(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/cache.Cache/Del",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CacheServer).Del(ctx, req.(*DelRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+var _Cache_serviceDesc = grpc.ServiceDesc{
+	ServiceName: "cache.Cache",
+	HandlerType: (*CacheServer)(nil),
+	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "Get",
+			Handler:    _Cache_Get_Handler,
+		},
+		{
+			MethodName: "Set",
+			Handler:    _Cache_Set_Handler,
+		},
+		{
+			MethodName: "Del",
+			Handler:    _Cache_Del_Handler,
+		},
+	},
+	Streams:  []grpc.StreamDesc{},
+	Metadata: "cache.proto",
 }

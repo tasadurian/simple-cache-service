@@ -1,0 +1,5 @@
+backend: redis
+compression: disabled
+redis_opts:
+  address: localhost
+  port: 6379

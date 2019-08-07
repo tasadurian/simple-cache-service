@@ -1,1 +1,1 @@
-go generation: `protoc --go_out=./go *.proto`
+go generation: `protoc cache.proto --go_out=plugins=grpc:./go`
