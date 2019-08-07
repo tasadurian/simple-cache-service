@@ -1,5 +1,7 @@
 # simple-cache-service
 
+[![Build Status](https://travis-ci.org/TheTommyTwitch/simple-cache-service.svg?branch=master)](https://travis-ci.org/TheTommyTwitch/simple-cache-service)
+
 Simple gRPC service that can be configured with multiple storage backends. Simple cache service is in early stages of development and is not stable.
 
 | Backend          | Status     | ttl |
